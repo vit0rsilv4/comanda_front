@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
+{% block title %}index{% endblock %}
 
-<body>
-    <h1>Rota da página de Index da nossa WEB APP</h1>
-    <h1>Uso de render_template</h1>
-</body>
-
-</html>
+{% block content %}
+<h1>index</h1>
+<p>Seja bem vindo!</p>
+<ul>
+<li><a href="{{ url_for('index.formIndex') }}">Home</a></li>
+</ul>
+{% endblock %}
