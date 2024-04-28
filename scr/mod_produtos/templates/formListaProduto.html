@@ -1,14 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Produto</title>
-</head>
-
-<body>
-    <h1>Rota da página de Produto da nossa WEB APP</h1>
-    <h1>Uso de render_template</h1>
-</body>
-
-</html>
+{% extends "base.html" %}
+{% block title %}Produto{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex flex-row justify-content-between align-items-center">
+        <p class="h1"> Produtos</p>
+        <a href="{{ url_for('produto.formProduto') }}" class="btn btn-primary">Novo Produto </a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Código</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Imagem</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="align-middle text-center">
+                <th scope="row">1</th>
+                <td>001</td>
+                <td>Copo Personalizado</td>
+                <td>Descrição breve do copo</td>
+                <td>R$ 15,00</td>
+                <td><img src="../../static/401-error.jpeg" alt="Imagem do Produto" class="img-thumbnail" style="width: 100px; height: auto;"></td>
+            </tr>
+            <tr class="align-middle text-center">
+                <th scope="row">1</th>
+                <td>001</td>
+                <td>Copo Personalizado</td>
+                <td>Descrição breve do copo</td>
+                <td>R$ 15,00</td>
+                <td><img src="../../static/404-error.webp" alt="Imagem do Produto" class="img-thumbnail" style="width: 100px; height: auto;"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
