@@ -21,3 +21,7 @@ def validaLogin():
     except Exception as e:
         # retorna para a tela de login
         return redirect(url_for('login.login', msgErro=e.args[0]))
+    
+@bp_login.route('/login/')
+def formLogin():
+    return render_template('formLogin.html')
