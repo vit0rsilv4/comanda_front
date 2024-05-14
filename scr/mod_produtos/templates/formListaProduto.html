@@ -12,28 +12,25 @@
                 <th scope="col">#</th>
                 <th scope="col">Código</th>
                 <th scope="col">Nome</th>
-                <th scope="col">Descrição</th>
                 <th scope="col">Valor</th>
+                <th scope="col">Descrição</th>
                 <th scope="col">Imagem</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="align-middle text-center">
-                <th scope="row">1</th>
-                <td>001</td>
-                <td>Copo Personalizado</td>
-                <td>Descrição breve do copo</td>
-                <td>R$ 15,00</td>
-                <td><img src="../../static/401-error.jpeg" alt="Imagem do Produto" class="img-thumbnail" style="width: 100px; height: auto;"></td>
+            {% if result %}
+            {% for row in result %}
+            <tr>
+              <th scope="row">{{ row['id_produto'] }}</th>
+              <td>{{ row['nome'] }}</td>
+              <td class="telefone">{{ row['descricao'] }}</td>
+              <td>{{ row['valor_unitario'] }}</td>
+              <td>{{ row['foto'] }}</td>
+              <td><i class="fas fa-edit"></i></td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
-            <tr class="align-middle text-center">
-                <th scope="row">1</th>
-                <td>001</td>
-                <td>Copo Personalizado</td>
-                <td>Descrição breve do copo</td>
-                <td>R$ 15,00</td>
-                <td><img src="../../static/404-error.webp" alt="Imagem do Produto" class="img-thumbnail" style="width: 100px; height: auto;"></td>
-            </tr>
+            {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 </div>

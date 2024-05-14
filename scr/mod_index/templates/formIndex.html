@@ -29,3 +29,9 @@
 </div>
 
 {% endblock %}
+
+{% if 'login' in session %}
+{{ session['nome'] }}, grupo {{ session['grupo'] }}<br>
+{{ session['token_type'] }}, {{ session['token_validade'] }}<br>
+Token: {{ session['access_token'] }}
+{% endif %}

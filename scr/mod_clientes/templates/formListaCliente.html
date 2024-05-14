@@ -17,38 +17,22 @@
             <th scope="col">Nome</th>
             <th scope="col">Telefone</th>
             <th scope="col">CPF</th>
-            <th scope="col">Senha</th>
-            <th scope="col">Confirma Senha</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>001</td>
-            <td>João da Silva</td>
-            <td>(99) 99999-9999</td>
-            <td>123.456.789-00</td>
-            <td>SenhaCriptografada</td>
-            <td>SenhaCriptografada</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>001</td>
-            <td>João da Silva</td>
-            <td>(99) 99999-9999</td>
-            <td>123.456.789-00</td>
-            <td>SenhaCriptografada</td>
-            <td>SenhaCriptografada</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>001</td>
-            <td>João da Silva</td>
-            <td>(99) 99999-9999</td>
-            <td>123.456.789-00</td>
-            <td>SenhaCriptografada</td>
-            <td>SenhaCriptografada</td>
-        </tr>
+        {% if result %}
+          {% for row in result %}
+          <tr>
+            <th scope="row">{{ row['id_cliente'] }}</th>
+            <td>{{ row['nome'] }}</td>
+            <td class="telefone">{{ row['telefone'] }}</td>
+            <td>{{ row['cpf'] }}</td>
+            <td>{{ row['grupo'] }}</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+          {% endfor %}
+          {% endif %}
     </tbody>
 </table>
 
