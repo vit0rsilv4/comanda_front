@@ -31,7 +31,7 @@
             <td>
                 <form action="{{ url_for('funcionario.formEditFuncionario') }}" method="POST" name="formEdit{{ row['id_funcionario'] }}">
                   <input type="hidden" name="id" value="{{ row['id_funcionario'] }}">
-                  <button type="submit" name="formEditFuncionario"> <i class="fas fa-edit"></i></button>
+                  <button type="submit" name="formEditFuncionario" class='btn'> <i class="fas fa-edit"></i></button>
                 </form>
             </td>
             <td>
