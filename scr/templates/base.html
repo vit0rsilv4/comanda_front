@@ -58,15 +58,28 @@
     <script src="{{ url_for('static', filename='bootstrap-5.3.3-dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='fontawesome-free-6.5.2-web/js/all.js') }}"></script>
     <script src="{{ url_for('static', filename='sweetalert2/sweetalert2.all.min.js') }}"></script>
+
     {% if request.args.get('msg'): %}
-    <h3>{{ request.args.get('msg') }}</h3><br>
-    {% elif msg: %}
-    <h3>{{ msg }}</h3><br>
+    <script>
+        Swal.fire("Sucesso", "{{ request.args.get('msg') }}", "success");
+    </script>
     {% elif request.args.get('msgErro'): %}
-    <h3>{{ request.args.get('msgErro') }}</h3><br>
+    <script>
+        Swal.fire("Erro", "{{ request.args.get('msgErro') }}", "error");
+    </script>
+    <!-- render_template - msg ou msgErro -->
+    {% elif msg: %}
+    <script>
+        Swal.fire("ID {{ msg.id }}, {{ msg.msg }} ", "{{ msg }}", "success");
+    </script>
     {% elif msgErro: %}
-    <h3>{{ msgErro }}</h3><br>
+    <script>
+        Swal.fire("{{ msgErro.msg if msgErro.msg else 'Erro' }}", "{{ msgErro }}", "error");
+    </script>
     {% endif %}
+
 </body>
+
+
 
 </html>
