@@ -59,3 +59,13 @@ def validaSessao(f):
         else:
             return f(*args, **kwargs)
     return decorated_function
+
+def validaToken(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'token_validade' in session and session['token_validade'] > datetime.timestamp( datetime.now() ):
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('login.login', msgErro='Usuário não logado! Token expirado!'))
+
+    return decorated_function
