@@ -1,44 +1,53 @@
 {% extends "base.html" %}
 {% block title %}Funcionário{% endblock %}
+{# ajusta a variáveis conforme novo ou edit #}
+{% set id = result[0].id_funcionario if result else '0' %}
+{% set nome = result[0].nome if result else '' %}
+{% set matricula = result[0].matricula if result else '' %}
+{% set cpf = result[0].cpf if result else '' %}
+{% set telefone = result[0].telefone if result else '' %}
+{% set grupo = result[0].grupo if result else '' %}
+{% set senha = result[0].senha if result else '' %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">Funcionário</h1>
-    <form name="formAdicionar" id="formAdicionar" >
+    <form name="formAdicionar" id="formAdicionar" action="{{ url_for('funcionario.insert') }}" method="POST">
         <div class="mb-3">
             <label for="id" class="form-label">Código</label>
-            <input type="text" class="form-control" name="id" id="id" value="" placeholder="Código" readonly>
+            <input type="text" class="form-control" name="id" id="id" value="{{id}}" placeholder="Código" readonly>
         </div>
         <div class="mb-3">
             <label for="nome" class="form-label">Nome Funcionário</label>
-            <input type="text" class="form-control" name="nome" id="nome" value="" placeholder="Nome Funcionário" maxlength="100" autofocus required>
+            <input type="text" class="form-control" name="nome" id="nome" value="{{nome}}" placeholder="Nome Funcionário" maxlength="100" autofocus required>
         </div>
         <div class="mb-3">
             <label for="matricula" class="form-label">Matrícula</label>
-            <input type="text" class="form-control" name="matricula" id="matricula" value="" placeholder="Matrícula" maxlength="15" required>
+            <input type="text" class="form-control" name="matricula" id="matricula" value="{{matricula}}" placeholder="Matrícula" maxlength="15" required>
         </div>
         <div class="mb-3">
             <label for="cpf" class="form-label">CPF</label>
-            <input type="text" class="form-control" name="cpf" id="cpf" value="" placeholder="CPF" maxlength="14" required>
+            <input type="text" class="form-control" name="cpf" id="cpf" value="{{cpf}}" placeholder="CPF" maxlength="14" required>
         </div>
         <div class="mb-3">
             <label for="telefone" class="form-label">Telefone</label>
-            <input type="tel" class="form-control" name="telefone" id="telefone" value=""  placeholder="Telefone" maxlength="15" required>
+            <input type="tel" class="form-control" name="telefone" id="telefone" value="{{telefone}}"  placeholder="Telefone" maxlength="15" required>
         </div>
         <div class="mb-3">
             <label for="grupo" class="form-label bg-body-dark">Grupo</label>
             <select class="form-select bg-body-dark" name="grupo" id="grupo" aria-label="Grupo">
-                <option value="0" class="bg-body-dark">Atendente</option>
-                <option value="1" class="bg-body-dark">Caixa</option>
-                <option value="2" class="bg-body-dark">Adm</option>
+                <option value="0" {{'selected' if grupo == 0 else '' }} class="bg-body-dark">Atendente</option>
+                <option value="1" {{'selected' if grupo == 1 else '' }} class="bg-body-dark">Caixa</option>
+                <option value="2" {{'selected' if grupo == 2 else '' }} class="bg-body-dark">Adm</option>
             </select>
         </div>
         <div class="mb-3">
             <label for="senha" class="form-label">Senha</label>
-            <input type="password" class="form-control" name="senha" id="senha" value="Bolinhas" placeholder="Senha" required>
+            <input type="password" class="form-control" name="senha" id="senha" value="{{senha}}" placeholder="Senha" required>
         </div>
         <div class="mb-3">
             <label for="resenha" class="form-label">Confirme a Senha</label>
-            <input type="password" class="form-control" name="resenha" id="resenha" value="Bolinhas" placeholder="Confirme a Senha" required>
+            <input type="password" class="form-control" name="resenha" id="resenha" value="{{senha}}" placeholder="Confirme a Senha" required>
         </div>
         <button type='submit' class="btn btn-primary w-100" name='salvarFuncionarioDB' id='salvarFuncionarioDB'>
             <i class='fas fa-save'></i> Salvar

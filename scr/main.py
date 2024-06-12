@@ -1,5 +1,6 @@
+from datetime import timedelta
 from flask import Flask, session
-from settings import HOST, PORT, DEBUG
+from settings import HOST, PORT, DEBUG, TEMPO_SESSION
 from mod_funcionario.funcionario import bp_funcionario
 from mod_produtos.produto import bp_produto
 from mod_clientes.cliente import bp_cliente
@@ -15,6 +16,13 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='None',
     SESSION_COOKIE_SECURE='True'
 )
+
+@app.before_request
+def before_request():
+    session.permanent = True
+    session['tempo'] = int(TEMPO_SESSION)
+    # o padrão é 31 dias...
+    app.permanent_session_lifetime = timedelta(minutes=session['tempo'])
 
 @app.context_processor
 def context_processor():

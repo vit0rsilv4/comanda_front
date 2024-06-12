@@ -22,3 +22,5 @@ def getHeadersAPI():
     'accept': 'application/json',
     'Authorization': f'Bearer {session['access_token'] if 'access_token' in session else ""}'
 }
+
+TEMPO_SESSION = os.getenv("TEMPO_SESSION")
