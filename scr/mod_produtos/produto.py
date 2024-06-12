@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, redirect, render_template, request, jsonify, url_for
 import requests
 import base64
 from mod_login.login import validaSessao, validaToken
@@ -28,21 +28,18 @@ def formProduto():
 @validaToken
 def formEditProduto():
     try:
-        # ID enviado via FORM
         id_produto = request.form['id']
-        print(id_produto)
-        # executa o verbo GET da API buscando somente o funcionário selecionado,
-        # obtendo o JSON do retorno
+
         response = requests.get(ENDPOINT_PRODUTO + id_produto, headers=getHeadersAPI())
         result = response.json()
         
         if response.status_code != 200:
             raise Exception(result)
         
-        # renderiza o form passando os dados retornados
-        return render_template('formProduto.html', result=result[0])
+        return render_template('formProduto.html', result=result)
     except Exception as e:
         return render_template('formListaProduto.html', msgErro=e.args[0])
+
 
 
 @bp_produto.route('/insert', methods=['POST'])
@@ -74,9 +71,9 @@ def insert():
         if response.status_code != 200 or result[1] != 200:
             raise Exception(result)
         
-        return jsonify(erro=False, msg=result[0])
+        return redirect(url_for('produto.formListaProduto', msg=result[0]))
     except Exception as e:
-        return jsonify(erro=True, msgErro=e.args[0])
+        return render_template('formListaProduto.html', msgErro=e.args[0])
 
 @bp_produto.route('/edit', methods=['POST'])
 @validaToken
@@ -107,9 +104,9 @@ def edit():
         if response.status_code != 200 or result[1] != 200:
             raise Exception(result)
         
-        return jsonify(erro=False, msg=result[0])
+        return redirect(url_for('produto.formListaProduto', msg=result[0]))
     except Exception as e:
-        return jsonify(erro=True, msgErro=e.args[0])
+        return render_template('formListaProduto.html', msgErro=e.args[0])
     
 @bp_produto.route('/delete', methods=['POST'])
 @validaToken
@@ -117,6 +114,8 @@ def delete():
     try:
         # dados enviados via FORM
         id_produto = request.form['id_produto']
+        print("ADSADSADASDASDASDAS")
+        print(id_produto)
         
         # executa o verbo DELETE da API e armazena seu retorno
         response = requests.delete(ENDPOINT_PRODUTO + id_produto, headers=getHeadersAPI())

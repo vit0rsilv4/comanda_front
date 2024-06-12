@@ -51,6 +51,8 @@
 {% endblock %}
 
 {% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/jquery.inputmask.min.js" integrity="sha512-a09SDu7oF3ZwLwzWr8X+J2U3lc//BrM8afGj39oBeZ4RZfE1eOR5Iq1P8t0N+ZpNz6K6slfz/nfUa44/EfPOzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $("form[name='jsDelete']").submit(function (e) {
         // parar o envio para poder fazer manualmente
@@ -70,7 +72,8 @@
             }
         });
     });
-
+    
+    $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
     function deletarProduto(idProduto) {
         $.post($SCRIPT_ROOT + "{{ url_for('produto.delete') }}", {
             id_produto: idProduto
