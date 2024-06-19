@@ -6,7 +6,10 @@
 <div class="container-fluid mt-4">
     <div class="d-flex flex-row justify-content-between align-items-center">
         <p class="h1">Clientes</p>
-        <a href="{{ url_for('cliente.formCliente') }}" class="btn btn-primary">Novo Cliente</a>
+        <div>
+            <a href="{{ url_for('cliente.generate_pdf') }}" class="btn-primary btn"><i class="fa-solid fa-file-pdf"></i></a>
+            <a href="{{ url_for('cliente.formCliente') }}" class="btn btn-primary">Novo Cliente</a>
+        </div>
     </div>
 
     <table class="table mt-2">

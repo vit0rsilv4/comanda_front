@@ -1,7 +1,8 @@
-from flask import Blueprint, redirect, render_template, request, jsonify, url_for
+from flask import Blueprint, redirect, render_template, request, jsonify, send_file, url_for
 import requests
 import base64
 from mod_login.login import validaSessao, validaToken
+from funcoes import Funcoes
 from settings import ENDPOINT_PRODUTO, getHeadersAPI
 bp_produto = Blueprint('produto', __name__, url_prefix="/produto", template_folder='templates')
 
@@ -127,3 +128,22 @@ def delete():
         return jsonify(erro=False, msg=result[0])
     except Exception as e:
         return jsonify(erro=True, msgErro=e.args[0])
+    
+@bp_produto.route('/generate_pdf', methods=['GET'])
+def generate_pdf():
+    try:
+        response = requests.get(ENDPOINT_PRODUTO, headers=getHeadersAPI())
+        result = response.json()
+
+        if response.status_code != 200:
+            raise Exception(result)
+
+        filename = "produtos_cadastrados.pdf"
+        title = "Produtos Cadastrados"
+        data = result[0]
+        fields = ['nome', 'descricao', 'valor_unitario', 'foto']
+        Funcoes.create_pdf(filename, title, data, fields)
+        
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

@@ -1,8 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, send_file
 import requests
 from mod_login.login import validaSessao, validaToken
 from funcoes import Funcoes
 from settings import getHeadersAPI, ENDPOINT_FUNCIONARIO
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from funcoes import Funcoes
 bp_funcionario = Blueprint('funcionario', __name__, url_prefix="/funcionario", template_folder='templates')
 
 ''' rotas dos formulários '''
@@ -137,3 +141,67 @@ def delete():
 
     except Exception as e:
         return jsonify(erro=True, msgErro=e.args[0])
+    
+def create_pdf(filename):
+    c = canvas.Canvas(filename, pagesize=letter)
+    width, height = letter
+
+    c.setFont("Helvetica-Bold", 20)
+    c.drawCentredString(width / 2.0, height - 50, "Funcionarios Cadastrados")
+
+    response = requests.get(ENDPOINT_FUNCIONARIO, headers=getHeadersAPI())
+    result = response.json()
+
+    if response.status_code != 200:    
+        raise Exception(result)
+    
+    funcionarios = result[0]
+    c.setFont("Helvetica", 12)
+    y_position = height - 100
+
+    for funcionario in funcionarios:
+        nome = funcionario.get('nome', 'Nome não disponível')
+        grupo = funcionario.get('grupo', 'Cargo não disponível')
+        matricula = funcionario.get('matricula', 'Matricula não disponível')
+        telefone = funcionario.get('telefone', 'Telefone não disponível')
+
+        c.drawString(100, y_position, f"Nome: {nome}")
+        y_position -= 20
+        c.drawString(100, y_position, f"Cargo: {grupo}")
+        y_position -= 20 
+        c.drawString(100, y_position, f"Matricula: {matricula}")
+        y_position -= 20
+        c.drawString(100, y_position, f"Telefone: {telefone}")
+        y_position -= 20
+
+        c.setStrokeColor(colors.red)
+        c.line(100, y_position, 500, y_position)
+
+        y_position -= 20  # Espaçamento entre os funcionários
+
+        if y_position < 100:
+            c.showPage()
+            y_position = height - 100
+            c.setFont("Helvetica", 12)
+
+    c.showPage()
+    c.save()
+    
+@bp_funcionario.route('/generate_pdf', methods=['GET'])
+def generate_pdf():
+    try:
+        response = requests.get(ENDPOINT_FUNCIONARIO, headers=getHeadersAPI())
+        result = response.json()
+
+        if response.status_code != 200:
+            raise Exception(result)
+
+        filename = "funcionarios_cadastrados.pdf"
+        title = "Funcionarios Cadastrados"
+        data = result[0]
+        fields = ['nome', 'grupo', 'matricula', 'telefone']
+        Funcoes.create_pdf(filename, title, data, fields)
+        
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

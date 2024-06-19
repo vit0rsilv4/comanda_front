@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, send_file, url_for, jsonify
 import requests
 from mod_login.login import validaSessao, validaToken
 from funcoes import Funcoes
@@ -118,3 +118,22 @@ def delete():
 
     except Exception as e:
         return jsonify(erro=True, msgErro=e.args[0])
+    
+@bp_cliente.route('/generate_pdf', methods=['GET'])
+def generate_pdf():
+    try:
+        response = requests.get(ENDPOINT_CLIENTE, headers=getHeadersAPI())
+        result = response.json()
+
+        if response.status_code != 200:
+            raise Exception(result)
+
+        filename = "clientes_cadastrados.pdf"
+        title = "Clientes Cadastrados"
+        data = result[0]
+        fields = ['id_cliente', 'nome', 'telefone']
+        Funcoes.create_pdf(filename, title, data, fields)
+        
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
